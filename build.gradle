@@ -1,5 +1,32 @@
 import org.codehaus.groovy.runtime.GStringImpl
 
+buildscript {
+    ext {
+        mindustryRelease = "v141"
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+
+        maven {
+            url 'https://jitpack.io'
+        }
+    }
+
+    dependencies {
+        classpath "com.github.Anuken.MindustryJitpack:core:$mindustryRelease"
+        classpath "com.github.Anuken.Mindustry:tools:v135"
+        classpath "com.github.Anuken.Arc:arc-core:$mindustryRelease"
+        classpath "com.github.Anuken.Arc:packer:$mindustryRelease"
+    }
+}
+
 plugins {
     id 'java'
 }

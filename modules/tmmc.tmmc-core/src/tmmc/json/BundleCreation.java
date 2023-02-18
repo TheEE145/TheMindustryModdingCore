@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 import mindustry.ctype.UnlockableContent;
 import mindustry.game.EventType.ClientLoadEvent;
 import tmmc.util.ContentLoad;
-import tmmc.util.Log;
 import tmmc.util.StringUtils;
 
 @SuppressWarnings("all") //idea warnings again
