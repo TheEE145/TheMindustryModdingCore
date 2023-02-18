@@ -1,8 +1,8 @@
 *.class
 build/
 .gradle
-./.idea
-./git
+.idea
+.git\gradle-wrapper-validation.yml
 
 *.jar
 *.aar
