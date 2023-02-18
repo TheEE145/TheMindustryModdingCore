@@ -1,157 +1,79 @@
 import org.codehaus.groovy.runtime.GStringImpl
 
-buildscript {
-    ext {
-        mindustryRelease = "v141"
-    }
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        google()
-
-        maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-
-        maven {
-            url 'https://jitpack.io'
-        }
-    }
-
-    dependencies {
-        classpath "com.github.Anuken.MindustryJitpack:core:$mindustryRelease"
-        classpath "com.github.Anuken.Mindustry:tools:v135"
-        classpath "com.github.Anuken.Arc:arc-core:$mindustryRelease"
-        classpath "com.github.Anuken.Arc:packer:$mindustryRelease"
-    }
-}
-
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
+group = 'com.github.TheEE145'
+version = '1.0'
+
+sourceCompatibility = 16
 targetCompatibility = 16
-sourceCompatibility = JavaVersion.VERSION_16
 
-allprojects {
-    apply plugin: 'java'
-    apply plugin: 'maven-publish'
-    group 'com.github.TheEE145'
-    version '1.2'
+repositories {
+    mavenCentral()
 
-    ext {
-        modModule = { String name ->
-            if (name.trim().startsWith(":")) {
-                name = name.trim().substring(1);
-            }
-
-            return project(":modules:tmmc.$name")
-        }
-
-        appTag = "v141"
-        mindustryImplementation = "com.github.Anuken.MindustryJitpack:core:$appTag" as GStringImpl
-        arcImplementation = "com.github.Anuken.Arc:arc-core:$appTag" as GStringImpl
-    }
-
-    sourceSets {
-        main {
-            java.srcDirs = ['src']
-            resources.srcDirs = []
-        }
-
-        test {
-            java.srcDirs = []
-            resources.srcDirs = []
-        }
-    }
-
-    repositories {
-        mavenCentral()
-
-        maven {
-            url 'https://www.jitpack.io'
-        }
-    }
-
-    configurations.configureEach {
-        resolutionStrategy.eachDependency { details ->
-            if(details.requested.group == 'com.github.Anuken.Arc'){
-                details.useVersion "$appTag"
-            }
-        }
-    }
-
-    tasks.withType(JavaCompile).tap {
-        configureEach {
-            options.compilerArgs.addAll(['--release', '16'])
-
-            options.fork = true
-            options.forkOptions.jvmArgs.addAll([
-                    '--illegal-access=permit',
-                    '--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED',
-                    '--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED',
-                    '--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED',
-                    '--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED',
-                    '--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED',
-                    '--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED',
-                    '--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED',
-                    '--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED',
-                    '--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED',
-                    '--add-exports=jdk.compiler/com.sun.tools.javac.jvm=ALL-UNNAMED',
-                    '--add-exports=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED',
-                    '--add-exports=java.base/sun.reflect.annotation=ALL-UNNAMED'
-            ])
-        }
-    }
-
-    dependencies {
-        compileOnly "$mindustryImplementation"
-        compileOnly "$arcImplementation"
-
-        testImplementation "$mindustryImplementation"
-        testImplementation "$arcImplementation"
-
-        implementation 'org.jetbrains:annotations:23.0.0'
-        annotationProcessor "com.github.Anuken:jabel:93fde537c7"
-    }
-
-    java {
-        withSourcesJar()
-        withJavadocJar()
-    }
-
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from components.java
-            }
-        }
-    }
-
-    wrapper {
-        gradleVersion = "7.5.1"
-        distributionType = Wrapper.DistributionType.ALL
+    maven {
+        url 'https://www.jitpack.io'
     }
 }
 
+ext {
+    appTag = "v141"
+    mindustry = "com.github.Anuken.MindustryJitpack:core:$appTag" as GStringImpl
+    arc = "com.github.Anuken.Arc:arc-core:$appTag" as GStringImpl
+}
+
 dependencies {
-    implementation modModule(":powershell")
-    implementation modModule(":tmmc-core")
-    implementation modModule(":graphics")
-    implementation modModule(":events")
+    compileOnly "$mindustry"
+    compileOnly "$arc"
+
+    implementation 'com.google.guava:guava:29.0-jre'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'org.jetbrains:annotations:23.0.0'
+
+    testImplementation "$mindustry"
+    testImplementation "$arc"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+
+    annotationProcessor "com.github.Anuken:jabel:93fde537c7"
+}
+
+configurations.configureEach {
+    resolutionStrategy.eachDependency { details ->
+        if(details.requested.group == 'com.github.Anuken.Arc'){
+            details.useVersion "$appTag"
+        }
+    }
 }
 
 sourceSets {
     main {
-        java.srcDirs = []
         resources.srcDirs = []
+        java.srcDirs = ['src/main']
     }
 
     test {
-        java.srcDirs = []
         resources.srcDirs = []
+        java.srcDirs = ['src/test']
     }
 }
 
-dependencies {
+java {
+	withSourcesJar()
+	withJavadocJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+		    from components.java
+        }
+    }
+}
+
+wrapper {
+    gradleVersion = "7.3.3"
+    distributionType = Wrapper.DistributionType.ALL
 }
