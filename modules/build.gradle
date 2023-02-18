@@ -2,9 +2,6 @@ plugins {
     id 'java'
 }
 
-group 'com.github.TheEE145'
-version '1.0'
-
 sourceSets {
     main {
         java.srcDirs = []
