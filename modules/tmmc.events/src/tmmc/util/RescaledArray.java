@@ -65,6 +65,8 @@ public class RescaledArray<T> implements Iterable<T>
             return (T) this.elements[index];
         } catch(ClassCastException exception) {
             throw new RuntimeException("array is broken", exception);
+        } catch(ArrayIndexOutOfBoundsException ignored) {
+            return null;
         }
     }
 

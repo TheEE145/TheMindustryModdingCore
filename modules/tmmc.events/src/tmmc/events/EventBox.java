@@ -46,14 +46,16 @@ public class EventBox implements Eventable {
         if(aClass != null && builder != null) {
             LoadedPost<?> builder = EventBox.builder.build(obj);
 
-            runs.get(aClass).forEach(run -> {
-                try {
-                    run.accept(obj);
-                    builder.addTotal();
-                } catch(Throwable error) {
-                    builder.addTotal(error);
-                }
-            });
+            if(runs.containsKey(aClass)) {
+                runs.get(aClass).forEach(run -> {
+                    try {
+                        run.accept(obj);
+                        builder.addTotal();
+                    } catch(Throwable error) {
+                        builder.addTotal(error);
+                    }
+                });
+            }
 
             builder.afterCreate();
             return builder;

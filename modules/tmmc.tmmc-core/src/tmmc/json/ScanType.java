@@ -18,7 +18,9 @@ public record ScanType(boolean mods, boolean local, boolean named) {
             return false;
         }
 
-        boolean valid = Core.bundle.has(Bundles.namePropertyOf(content));
+        boolean valid = Core.bundle.has(
+                Bundles.namePropertyOf(content)
+        );
 
         if(named & valid) {
             return true;
@@ -29,10 +31,10 @@ public record ScanType(boolean mods, boolean local, boolean named) {
         }
 
         String ctProp = Bundles.propertyOf(content);
-        ctProp = ctProp.substring(content.getContentType().name().length());
+        ctProp = ctProp.substring(content.getContentType().name().length() + 1);
         valid = ctProp.startsWith(data.getName() + "-");
 
-        if(local && valid) {
+        if(local & valid) {
             return true;
         } else {
             if(valid) {

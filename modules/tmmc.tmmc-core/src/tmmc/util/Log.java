@@ -5,6 +5,7 @@ import arc.struct.Seq;
 import arc.util.OS;
 import arc.Events;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import mindustry.game.EventType;
 
@@ -18,8 +19,16 @@ import static mindustry.Vars.*;
  * hacks mindustry logging system to add custom log levels like fine or fatal
  */
 public class Log {
+    public static String logPrefix = "anonymous";
+    public static String color = "cyan";
+
+    @Contract(pure = true)
+    private static @NotNull String prefix() {
+        return "[" + color + "][" + logPrefix + "][] ";
+    }
+
     public static void log(LogLevel level, String  str, Object... args) {
-        handler.log(level, "[cyan][octo][] " + arc.util.Log.format(str, args));
+        handler.log(level, prefix() + arc.util.Log.format(str, args));
     }
 
     public static void info(String str, Object... args) {
@@ -99,21 +108,21 @@ public class Log {
 
                 ui.consolefrag.addMessage(arc.util.Log.removeColors(result));
             }
-        }
 
-        if(writer == null) {
-            tryToLoadWritter();
-        }
+            if(writer == null) {
+                tryToLoadWritter();
+            }
 
-        if(writer != null) {
-            try {
-                writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " +
-                        arc.util.Log.removeColors(text) + "\n");
+            if(writer != null) {
+                try {
+                    writer.write("[" + Character.toUpperCase(level.name().charAt(0)) + "] " +
+                            arc.util.Log.removeColors(result) + "\n");
 
-                writer.flush();
-            } catch(IOException e) {
-                e.printStackTrace();
-                //ignore it
+                    writer.flush();
+                } catch(IOException e) {
+                    e.printStackTrace();
+                    //ignore it
+                }
             }
         }
     };

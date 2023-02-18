@@ -1,6 +1,5 @@
 package tmmc.json;
 
-import arc.Events;
 import arc.util.Time;
 import arc.struct.Seq;
 
@@ -11,17 +10,18 @@ import java.util.function.Consumer;
 import mindustry.ctype.UnlockableContent;
 import mindustry.game.EventType.ClientLoadEvent;
 import tmmc.util.ContentLoad;
+import tmmc.util.Log;
 import tmmc.util.StringUtils;
 
+@SuppressWarnings("all") //idea warnings again
 public class BundleCreation {
     private transient ModJsonData root;
 
-    private final ScanType scanType = new ScanType(false, true, false);
-    private final String[] ignoredToScan = new String[0];
-    private final boolean enabled = false;
-    private final float postTime = 0;
+    private ScanType scanType = new ScanType(false, true, false);
+    private String[] ignoredToScan = new String[0];
+    private boolean enabled = false;
+    private float postTime = 0;
 
-    @SuppressWarnings("all") //idea warnings again
     public Consumer<ClientLoadEvent> getRuntime() {
         return ignored -> {
             if(this.enabled) {
@@ -51,7 +51,11 @@ public class BundleCreation {
             ContentLoad.eachUnlockable(cont -> {
                 if(this.needChange(cont)) {
                     String name = cont.name;
-                    name = name.substring(name.indexOf('-'));
+
+                    if(!cont.isVanilla()) {
+                        name = name.substring(cont.minfo.mod.name.length() + 1);
+                    }
+
                     cont.localizedName = StringUtils.anyToSpace(name);
                 }
             });
@@ -84,6 +88,14 @@ public class BundleCreation {
         } else {
             this.root = data;
         }
+    }
+
+    public void enable() {
+        this.enabled = true;
+    }
+
+    public void disable() {
+        this.enabled = false;
     }
 
     @Override

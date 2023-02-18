@@ -22,7 +22,6 @@ public class FileFinder {
     public static final int PROTOCOL_CORE = 2;
     public static final int PROTOCOL_FILE = 3;
     public static final int PROTOCOL_ROOT = 4;
-
     public static Mods.LoadedMod modToSearch;
 
     @Contract(pure = true)

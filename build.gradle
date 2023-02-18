@@ -92,9 +92,9 @@ allprojects {
 }
 
 dependencies {
+    implementation modModule(":powershell")
     implementation modModule(":tmmc-core")
     implementation modModule(":graphics")
-    implementation modModule(":powershell")
     implementation modModule(":events")
 }
 

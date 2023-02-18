@@ -22,6 +22,10 @@ public class ThrowableRun implements Runnable {
 
     @Override
     public void run() {
+        if(this.throwables == null || this.throwables.length() == 0) {
+            return;
+        }
+
         this.thr();
         if(this.index++ < this.throwables.length() - 1) {
             this.run();

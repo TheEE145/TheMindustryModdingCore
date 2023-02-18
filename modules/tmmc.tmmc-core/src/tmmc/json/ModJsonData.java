@@ -62,7 +62,7 @@ public class ModJsonData {
     }
 
     public Seq<Contributor> getContributors() {
-        return Seq.with(this.contributors);
+        return this.contributors == null ? new Seq<>() : Seq.with(this.contributors);
     }
 
     public String toJson() {
