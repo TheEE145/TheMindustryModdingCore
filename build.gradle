@@ -1,5 +1,24 @@
 import org.codehaus.groovy.runtime.GStringImpl
 
+buildscript{
+    ext{
+        mindustryVersion = 'v141'
+    }
+    repositories{
+        mavenLocal()
+        mavenCentral()
+        google()
+        maven{ url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven{ url 'https://jitpack.io' }
+    }
+    dependencies{
+        classpath "com.github.Anuken.MindustryJitpack:core:$mindustryVersion"
+        classpath "com.github.Anuken.Mindustry:tools:v135"
+        classpath "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+        classpath "com.github.Anuken.Arc:packer:$mindustryVersion"
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
