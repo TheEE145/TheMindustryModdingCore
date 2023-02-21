@@ -1,4 +1,4 @@
-import tmmc.json.JsonMod.Repository;
+import net.tmmc.json.JsonMod.Repository;
 import arc.util.Log;
 
 public class RepositoryTest {

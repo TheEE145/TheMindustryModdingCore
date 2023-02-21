@@ -1,4 +1,4 @@
-import tmmc.util.SeqStream;
+import net.tmmc.util.SeqStream;
 import arc.struct.Seq;
 import arc.util.Log;
 

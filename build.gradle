@@ -22,8 +22,8 @@ buildscript{
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
-group = 'com.github.TheEE145'
-version = '1.0'
+group = 'net.TheEE145'
+version = '1.0b'
 
 sourceCompatibility = JavaVersion.VERSION_16
 targetCompatibility = JavaVersion.VERSION_16
@@ -43,12 +43,12 @@ ext {
 }
 
 dependencies {
+    compileOnly 'org.jetbrains:annotations:23.0.0'
     compileOnly "$mindustry"
     compileOnly "$arc"
 
     implementation 'com.google.guava:guava:29.0-jre'
     implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'org.jetbrains:annotations:23.0.0'
 
     testImplementation "$mindustry"
     testImplementation "$arc"
