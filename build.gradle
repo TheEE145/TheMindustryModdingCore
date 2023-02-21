@@ -22,7 +22,7 @@ buildscript{
 apply plugin: 'java'
 apply plugin: 'maven-publish'
 
-group = 'net.TheEE145'
+group = 'com.github.TheEE145'
 version = '1.0b'
 
 sourceCompatibility = JavaVersion.VERSION_16
