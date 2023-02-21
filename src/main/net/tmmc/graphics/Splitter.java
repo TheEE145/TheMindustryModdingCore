@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class Splitter {
     /**
      * Original code from Project Unity
-     * @author: @Xeloboyo
+     * Author: Xeloboyo
      * */
     @Contract("null, _, _, _ -> new")
     public static TextureRegion @NotNull[] getRegions(TextureRegion region, int w, int h, int tilesize) {
