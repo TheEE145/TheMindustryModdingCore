@@ -23,7 +23,7 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 group = 'com.github.TheEE145'
-version = '1.0b'
+version = '1.0.1b'
 
 sourceCompatibility = JavaVersion.VERSION_16
 targetCompatibility = JavaVersion.VERSION_16
