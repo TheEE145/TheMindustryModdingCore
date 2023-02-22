@@ -41,8 +41,12 @@ public class BundleCreator {
             if(mod != null) {
                 Content.each(content -> {
                     if(content != null && this.accept(content, mod)) {
-                        String name = content.name.substring(content.minfo.mod.name.length() + 1);
-                        content.localizedName = StringUtils.toSpace(name);
+                        try {
+                            String name = content.name.substring(content.minfo.mod.name.length() + 1);
+                            content.localizedName = StringUtils.toSpace(name);
+                        } catch(Throwable ignored) {
+                            content.localizedName = StringUtils.toSpace(content.name);
+                        }
                     }
                 });
             }
