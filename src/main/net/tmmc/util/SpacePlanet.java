@@ -1,6 +1,7 @@
 package net.tmmc.util;
 
 import arc.struct.Seq;
+import mindustry.ctype.ContentType;
 import mindustry.type.Planet;
 
 import static mindustry.Vars.content;
@@ -26,6 +27,11 @@ public class SpacePlanet extends Planet {
 
     @Override
     public boolean isHidden() {
+        return true;
+    }
+
+    @Override
+    public boolean isVanilla() {
         return false;
     }
 

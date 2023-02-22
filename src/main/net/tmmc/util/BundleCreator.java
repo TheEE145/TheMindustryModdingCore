@@ -96,7 +96,7 @@ public class BundleCreator {
             boolean isNamed = Bundles.hasName(content);
 
             boolean b = named == isNamed;
-            return (isLocal) ? (local && b) : ((isModded) ? (mods && b) : (b));
+            return (isLocal) ? (local && b) : ((isModded) ? (mods && b) : (named && b));
         }
     }
 }
