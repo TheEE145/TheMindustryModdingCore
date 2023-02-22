@@ -65,6 +65,6 @@ public record ModAtlas(JsonMod mod) {
     }
 
     public @NotNull TextureRegion errorRegion() {
-        return this.get("error", (TextureRegion) null);
+        return atlas.find("error");
     }
 }

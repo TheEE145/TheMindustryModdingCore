@@ -14,8 +14,7 @@ import arc.func.Cons;
 import arc.Events;
 
 public class BundleCreator {
-    @XJsonField
-    private String[] ignoredToScan;
+    @XJsonField private String[] ignoredToScan;
     @XJsonField private ScanType scanType;
     @XJsonField private boolean enabled;
     @XJsonField private float postTime;
@@ -42,7 +41,8 @@ public class BundleCreator {
             if(mod != null) {
                 Content.each(content -> {
                     if(content != null && this.accept(content, mod)) {
-                        content.localizedName = StringUtils.toSpace(content.name);
+                        String name = content.name.substring(content.minfo.mod.name.length() + 1);
+                        content.localizedName = StringUtils.toSpace(name);
                     }
                 });
             }
