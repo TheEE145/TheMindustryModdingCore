@@ -19,6 +19,7 @@ public class ApplicationMod extends Mod implements arc.ApplicationListener {
     public ModLogger logger;
     public ModAtlas atlas;
 
+    @Deprecated
     public void contentLoad(Runnable runnable) {
         Events.register(ModContentLoad.class, (event) -> {
             if(event != null && event.mod() == loadedMod) {
@@ -40,16 +41,22 @@ public class ApplicationMod extends Mod implements arc.ApplicationListener {
     }
 
     @Override
-    public void loadContent() {
+    public void init() {
         var mod = JsonMod.create(this);
 
         var settings = mod.getCoreSettings();
-        if(settings != null && settings.throwExceptionIntoDialog()) {
-            Events.postDataRun = (data) -> {
-                if(data.hasErrors()) {
-                    data.causes().forEach(ThrowableUtils::showDialog);
-                }
-            };
+        if(settings != null) {
+            if(settings.throwExceptionIntoDialog()) {
+                Events.postDataRun = (data) -> {
+                    if(data.hasErrors()) {
+                        data.causes().forEach(ThrowableUtils::showDialog);
+                    }
+                };
+            }
+
+            if(settings.fixOtherModsRepository()) {
+                Events.register(ClientLoadEvent.class, ModUtils::setRepositories);
+            }
         }
 
         this.loadedMod = mod;
@@ -58,21 +65,10 @@ public class ApplicationMod extends Mod implements arc.ApplicationListener {
         (this.adapter = new ModSoundAdapter(mod)).loadAtlas();
 
         Events.register(DisposeEvent.class, adapter::dispose);
-        Events.post(new ModContentLoad(mod));
-    }
-
-    @Override
-    public void init() {
-        var mod = this.loadedMod;
 
         mod.getRaw().setRepo(mod.getRepository().asUrlFragment());
         mod.getMeta(met -> met.author = mod.getAuthors());
         mod.runBundleCreation();
-
-        var settings = mod.getCoreSettings();
-        if(settings != null && settings.fixOtherModsRepository()) {
-            Events.register(ClientLoadEvent.class, ModUtils::setRepositories);
-        }
 
         Events.post(new ModInitEvent(mod));
     }
