@@ -10,4 +10,8 @@ public interface Ranged extends Position {
     default void drawRange() {
         Drawf.dashCircle(this.getX(), this.getY(), this.range(), Pal.place);
     }
+
+    default boolean enabledRange() {
+        return true;
+    }
 }

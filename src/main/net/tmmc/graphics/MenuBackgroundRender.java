@@ -1,10 +1,6 @@
 package net.tmmc.graphics;
 
-import arc.util.Reflect;
-
-import mindustry.Vars;
 import mindustry.graphics.MenuRenderer;
-import mindustry.ui.fragments.MenuFragment;
 
 public class MenuBackgroundRender extends MenuRenderer {
     private final Runnable background;
@@ -18,7 +14,7 @@ public class MenuBackgroundRender extends MenuRenderer {
     }
 
     public void setAsMain() {
-        Reflect.set(MenuFragment.class, Vars.ui.menufrag, "renderer", this);
+        MenuBackgroundRenderers.setRenderer(this);
     }
 
     @Override

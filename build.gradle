@@ -23,7 +23,7 @@ apply plugin: 'java'
 apply plugin: 'maven-publish'
 
 group = 'com.github.TheEE145'
-version = '1.0.3bf'
+version = '1.0.4b'
 
 sourceCompatibility = JavaVersion.VERSION_16
 targetCompatibility = JavaVersion.VERSION_16
@@ -49,6 +49,7 @@ dependencies {
 
     implementation 'com.google.guava:guava:29.0-jre'
     implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'commons-validator:commons-validator:1.3.1'
 
     testImplementation "$mindustry"
     testImplementation "$arc"

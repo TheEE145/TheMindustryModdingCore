@@ -43,6 +43,7 @@ public class XWorld {
     }
 
     public static Tile at(int x, int y) {
+        checkWorld();
         return world.tile(x, y);
     }
 
@@ -53,6 +54,7 @@ public class XWorld {
     }
 
     public static Tile at(int pos) {
+        checkWorld();
         return world.tile(pos);
     }
 }

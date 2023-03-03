@@ -1,5 +1,7 @@
 package net.tmmc.util;
 
+import arc.func.Boolf;
+import arc.func.Func;
 import arc.struct.Seq;
 import org.jetbrains.annotations.Contract;
 
@@ -8,7 +10,7 @@ public class SeqStream<T> {
     public static<T> SeqStream<T> of(Seq<T> vector) {
         if(vector == null) return null;
         SeqStream<T> stream = new SeqStream<>();
-        stream.vector = vector;
+        stream.vector = vector.copy();
         return stream;
     }
 
@@ -32,6 +34,18 @@ public class SeqStream<T> {
         }
 
         return this.copy();
+    }
+
+    public<R> SeqStream<R> map(Func<T, R> mapper) {
+        return SeqStream.of(this.vector.map(mapper));
+    }
+
+    public<R> SeqStream<R> flatMap(Func<T, Iterable<R>> mapper) {
+        return SeqStream.of(this.vector.flatMap(mapper));
+    }
+
+    public SeqStream<T> filter(Boolf<T> predicate) {
+        return SeqStream.of(this.vector.filter(predicate));
     }
 
     public SeqStream<T> copy() {

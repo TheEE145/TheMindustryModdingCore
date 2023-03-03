@@ -1,7 +1,6 @@
 package net.tmmc.util;
 
 import arc.struct.Seq;
-import mindustry.ctype.ContentType;
 import mindustry.type.Planet;
 
 import static mindustry.Vars.content;

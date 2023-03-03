@@ -49,4 +49,22 @@ public class StringUtils {
     public static char toUpperCase(char ch) {
         return (char) (ch - charOffset() * BoolInt.toInt(isLowerCase(ch)));
     }
+
+    public static char upperCaseOf(String msg, int index) {
+        return msg == null || index < 0 ? 'A' : toUpperCase(msg.charAt(index));
+    }
+
+    public static char lowerCaseOf(String msg, int index) {
+        return msg == null || index < 0 ? 'a' : toLowerCase(msg.charAt(index));
+    }
+
+    @Contract(pure = true)
+    public static @NotNull String prefixate(String prefix) {
+        return "[" + prefix + "]";
+    }
+
+    @Contract(pure = true)
+    public static @NotNull String prefixateSpace(String prefix) {
+        return prefixate(prefix) + " ";
+    }
 }

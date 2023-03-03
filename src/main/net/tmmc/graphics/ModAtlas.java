@@ -37,7 +37,11 @@ public record ModAtlas(JsonMod mod) {
     }
 
     public boolean has(String prefix) {
-        return validRegion(this.get(prefix));
+        try {
+            return validRegion(this.get(prefix));
+        } catch(Throwable ignored) {
+            return false;
+        }
     }
 
     public AnimatedTextureRegion create(String prefix) {
@@ -64,7 +68,11 @@ public record ModAtlas(JsonMod mod) {
         return regions;
     }
 
-    public @NotNull TextureRegion errorRegion() {
+    public TextureRegion errorRegion() {
+        return atlas.find(this.mod.getCoreSettings().errorRegion());
+    }
+
+    public static @NotNull TextureRegion defaultErrorRegion() {
         return atlas.find("error");
     }
 }

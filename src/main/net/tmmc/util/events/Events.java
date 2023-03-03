@@ -3,6 +3,7 @@ package net.tmmc.util.events;
 import arc.func.Cons;
 import arc.struct.Seq;
 import arc.struct.ObjectMap;
+import arc.util.Time;
 import mindustry.game.EventType;
 import mindustry.game.EventType.Trigger;
 import org.jetbrains.annotations.Contract;
@@ -25,6 +26,22 @@ public class Events {
         }
 
         events.get(tClass).add((Cons<Object>) handler);
+    }
+
+    public static<T> void register(Class<T> tClass, int interval, Cons<T> handler) {
+        register(tClass, (e) -> Time.runTask(interval, () -> handler.get(e)));
+    }
+
+    public static void register(Class<?> aClass, int interval, Runnable runnable) {
+        register(aClass, interval, ignored -> runnable.run());
+    }
+
+    public static<T> void register(int interval, Cons<T> handler) {
+        register(currentEvent, interval, obj -> handler.get((T) obj));
+    }
+
+    public static void register(int interval, Runnable runnable) {
+        register(currentEvent, interval, runnable);
     }
 
     public static void register(Runnable runnable) {

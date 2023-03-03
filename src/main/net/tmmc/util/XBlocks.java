@@ -43,13 +43,18 @@ public class XBlocks {
     }
 
     public static byte joints(Building building, Boolf<Tile> boolf) {
-        if(building == null) return (byte) -1;
+        if(building == null || boolf == null) return (byte) -1;
         int[] buffer = new int[] {0, 3};
         Geom.each4dAngle(point -> {
-            if(boolf != null && boolf.get(XWorld.at(point))) {
+            if(boolf.get(XWorld.at(point))) {
                 buffer[0] += 1 << buffer[1]--;
             }
         }, Geom.toPoint(building));
         return (byte) buffer[0];
+    }
+
+    @Contract(value = "null, _ -> false", pure = true)
+    public static boolean isTheSameBlock(Building building, Block block) {
+        return building != null && building.block == block;
     }
 }

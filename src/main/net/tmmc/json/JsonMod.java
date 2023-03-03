@@ -6,6 +6,8 @@ import mindustry.mod.Mod;
 import mindustry.mod.Mods.ModMeta;
 import mindustry.mod.Mods.LoadedMod;
 
+import net.tmmc.ApplicationMod;
+import net.tmmc.util.StringUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +34,10 @@ public class JsonMod {
         return mod1;
     }
 
+    public static @NotNull JsonMod create(ApplicationMod mod) {
+        return create(mod, mod.self());
+    }
+
     @XJsonField private String name;
     @XJsonField private String author;
     @XJsonField private String displayName;
@@ -42,6 +48,7 @@ public class JsonMod {
     @XJsonField private Contributors contributors;
     @XJsonField private Repository repository;
     @XJsonField private BundleCreator bundleCreation;
+    @XJsonField private Settings coreSettings;
 
     private transient Mod main;
     private transient ModMeta meta;
@@ -102,10 +109,6 @@ public class JsonMod {
         return this.name + "-" + name;
     }
 
-    public String getRepoFil() {
-        return this.getRepoURL().substring(githubDomain.length());
-    }
-
     public String getRepoURL() {
         if(this.repository != null) {
             return this.repository.asUrl();
@@ -120,6 +123,15 @@ public class JsonMod {
         } else {
             return this.author;
         }
+    }
+
+    public String getPrefix() {
+        var settings = getCoreSettings();
+        if(settings == null || !settings.useCustomLoggerPrefix()) {
+            return StringUtils.prefixate(this.getDisplayName());
+        }
+
+        return StringUtils.prefixate(settings.customLoggerPrefix);
     }
 
     public record Contributor(String name, boolean freesound) {
@@ -173,12 +185,30 @@ public class JsonMod {
     public record Repository(String user, String name) {
         @Contract(pure = true)
         public @NotNull String asUrl() {
-            return githubDomain + user + "/" + name;
+            return githubDomain + asUrlFragment();
         }
 
         @Contract(pure = true)
         public @NotNull String asJitpackUrl() {
-            return jitpackDomain + user + "/" + name;
+            return jitpackDomain + asUrlFragment();
+        }
+
+        @Contract(pure = true)
+        public @NotNull String asUrlFragment() {
+            return user + "/" + name;
+        }
+    }
+
+    public record Settings(boolean throwExceptionIntoDialog,
+                           boolean fixOtherModsRepository,
+                           String modErrorRegionName,
+                           String customLoggerPrefix,
+                           boolean hasErrorRegion,
+                           boolean useCustomLoggerPrefix)
+    {
+        @Contract(pure = true)
+        public String errorRegion() {
+            return hasErrorRegion ? modErrorRegionName : "error";
         }
     }
 
@@ -230,5 +260,9 @@ public class JsonMod {
 
     public String getVersion() {
         return this.version;
+    }
+
+    public Settings getCoreSettings() {
+        return this.coreSettings;
     }
 }
